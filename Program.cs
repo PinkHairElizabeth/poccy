@@ -1,47 +1,40 @@
 ﻿namespace ProcessMonitor
 {
-    internal class Program
+    public class Program
     {
-        static int Main(string[] args)
+        public static int Main(string[] args)
         {
             Tasks tasks = new Tasks();
 
             if (args.Length == 0)
             {
-                Tasks.HelpMenu();
+                Extensions.PrintArgs();
                 return 1;
             }
 
-            switch (args[0].ToLower())
+            switch (Extensions.GetField(args[0].ToUpper()))
             {
-                case COMMANDS.LIST:
+                case ARGS.LIST:
                     tasks.ListProcesses();
                     break;
 
-                case COMMANDS.ADD:
+                case ARGS.ADD:
                     Console.WriteLine(tasks.AddProcesses(args[1]));
                     break;
 
-                // TODO
-                // ~~Need to verify this is actually working~~
-                // Verified. It does not work :'(
-                case COMMANDS.START:
-                    if (args.Length > 1 && args[1] != "background") //TODO
-                    {
-                        Tasks.NewWindow("start background"); //TODO
-                        return 0;
-                    }
-
-                    tasks.Start();
+                // TODO Handle sub commands better
+                case ARGS.START:
+                    if (args.Length > 1 && args[1] == "background") tasks.Start();
+                    else Tasks.NewWindow("start background");
                     break;
 
-                case COMMANDS.ALERT:
+                case ARGS.ALERT:
                     tasks.Alarm(args[1]);
                     break;
 
-                case COMMANDS.HELP:
+                case ARGS.HELP:
                 default:
-                    Tasks.HelpMenu();
+                    Extensions.PrintArgs();
                     break;
             }
 

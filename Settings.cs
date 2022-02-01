@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using System.Text.Json;
 
 namespace ProcessMonitor
@@ -29,7 +27,12 @@ namespace ProcessMonitor
             }
 
             string jsonRead = File.ReadAllText(Settings.GetSettingsPath());
-            this.settings = JsonSerializer.Deserialize<SettingsFormat>(jsonRead);
+            var jsonParsed = JsonSerializer.Deserialize<SettingsFormat>(jsonRead);
+
+            // Realistically should never happen.
+            if(jsonParsed == null) throw new Exception("Something has gone horribly wrong with reading JSON settings.");
+            
+            this.settings = jsonParsed;
         }
 
         public void Save()

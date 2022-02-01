@@ -3,45 +3,25 @@ using System.Timers;
 
 namespace ProcessMonitor
 {
-    // TODO: enum
-    internal static class COMMANDS
-    {
-        public const string HELP = "help";
-        public const string LIST = "list";
-        public const string ADD = "add";
-        public const string START = "start";
-        public const string ALERT = "alert";
-    }
-
     internal class Tasks
     {
         /// <summary>
-        /// TODO
+        /// Open a new Console windows of the application
         /// </summary>
-        public static void HelpMenu()
-        {
-            string result = "The following commands are avalible:\n\n";
-
-            result += COMMANDS.HELP + "\t\tDisplays the avalible commands." + "\n";
-            result += COMMANDS.LIST + "\t\tList running processes." + "\n";
-            result += COMMANDS.ADD + "\t\tAdd a process to monitor." + "\n";
-            result += COMMANDS.START + "\t\tStart monitoring processes in background." + "\n";
-            result += COMMANDS.ALERT + "\t\t(TEST) Triggers an alert as if a process monitored is missing." + "\n";
-            result += "\n\n";
-
-            Console.WriteLine(result);
-        }
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        /// <param name="args"></param>
+        /// <param name="args">arguments to pass to the application</param>
         public static void NewWindow(string args, bool hidden = true)
         {
             //Process.GetCurrentProcess()
             using (Process newProcess = new Process())
             {
-                newProcess.StartInfo = new ProcessStartInfo(Process.GetCurrentProcess().MainModule.FileName);
+                var currentProcessModule = Process.GetCurrentProcess().MainModule;
+
+                // Sanity Null Checks
+                // In theory, should never happen.
+                if(currentProcessModule == null) throw new Exception("Honestly... Idk what happened here.");
+                if(currentProcessModule.FileName == null) throw new Exception("Honestly... Idk what happened here.");
+
+                newProcess.StartInfo = new ProcessStartInfo(currentProcessModule.FileName);
                 newProcess.StartInfo.UseShellExecute = true;
                 newProcess.StartInfo.Arguments = args;
                 newProcess.StartInfo.CreateNoWindow = hidden;
@@ -58,7 +38,7 @@ namespace ProcessMonitor
 
             foreach (Process proc in localProcesses)
             {
-                Console.WriteLine("Process Name: " + proc.ProcessName);
+                Console.WriteLine($"Process Name: {proc.ProcessName}");
             }
         }
 
@@ -76,10 +56,10 @@ namespace ProcessMonitor
                 settings.settings.Processes.Add(process);
                 settings.Save();
 
-                return process + " has been added";
+                return $"{process} has been added";
             }
 
-            return "A process by the name " + process + " could not be found.";
+            return $"A process by the name {process} could not be found.";
         }
 
         /// <summary>
@@ -89,7 +69,7 @@ namespace ProcessMonitor
         /// <param name="message">missing processes</param>
         public void Alarm(string message)
         {
-            Console.WriteLine("The follow processes are missing: \n" + message);
+            Console.WriteLine($"The follow processes are missing: \n{message}");
             for (int i = 0; i <= 10; i++)
             {
                 Console.Beep();
@@ -124,7 +104,7 @@ namespace ProcessMonitor
 
             HashSet<string> missing = new HashSet<string>();
             foreach (string process in settings.settings.Processes)
-            { 
+            {
                 if(Process.GetProcessesByName(process).Length == 0)
                 {
                     missing.Add(process);
@@ -133,7 +113,7 @@ namespace ProcessMonitor
 
             if(missing.Count > 0)
             {
-                Tasks.NewWindow("alert " + string.Join(",", missing), false);
+                Tasks.NewWindow($"alert {string.Join(",", missing)}", false);
             }
         }
     }
