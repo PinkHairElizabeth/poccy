@@ -5,11 +5,13 @@ namespace ProcessMonitor
     internal class SettingsFormat
     {
         public int PingFrequency { get; set; }
+        public bool AlertOnEmpty { get; set; }
         public HashSet<string> Processes { get; set; }
 
         public SettingsFormat ()
         {
             this.PingFrequency = 5;
+            this.AlertOnEmpty = false;
             this.Processes = new HashSet<string>();
         }
     }

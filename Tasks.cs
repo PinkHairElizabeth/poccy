@@ -11,7 +11,6 @@ namespace ProcessMonitor
         /// <param name="args">arguments to pass to the application</param>
         public static void NewWindow(string args, bool hidden = true)
         {
-            //Process.GetCurrentProcess()
             using (Process newProcess = new Process())
             {
                 var currentProcessModule = Process.GetCurrentProcess().MainModule;
@@ -22,7 +21,7 @@ namespace ProcessMonitor
                 if(currentProcessModule.FileName == null) throw new Exception("Honestly... Idk what happened here.");
 
                 newProcess.StartInfo = new ProcessStartInfo(currentProcessModule.FileName);
-                newProcess.StartInfo.UseShellExecute = true;
+                newProcess.StartInfo.UseShellExecute = !hidden;
                 newProcess.StartInfo.Arguments = args;
                 newProcess.StartInfo.CreateNoWindow = hidden;
                 newProcess.Start();
@@ -91,6 +90,7 @@ namespace ProcessMonitor
             timer.Enabled = true;
             timer.Start();
 
+            // TODO
             // This is not the best way of handling this.
             // This should actually run as a background task.
             // For time sake, this should work for now though.
@@ -111,10 +111,14 @@ namespace ProcessMonitor
                 }
             }
 
-            if(missing.Count > 0)
+            if(!settings.settings.AlertOnEmpty && missing.Count != settings.settings.Processes.Count)
             {
-                Tasks.NewWindow($"alert {string.Join(",", missing)}", false);
+                if(missing.Count > 0)
+                {
+                    Tasks.NewWindow($"alert {string.Join(",", missing)}", false);
+                }
             }
+            
         }
     }
 }
