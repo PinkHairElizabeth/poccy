@@ -2,7 +2,7 @@
 {
     public class Program
     {
-        public static int Main(string[] args)
+        internal static int Main(string[] args)
         {
             Tasks tasks = new Tasks();
 

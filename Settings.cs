@@ -43,7 +43,7 @@ namespace ProcessMonitor
             File.WriteAllText(Settings.GetSettingsPath(), jsonWrite);
         }
 
-        public static string GetSettingsPath() 
+        private static string GetSettingsPath() 
         { 
             return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile).ToString() + "/process_monitor_settings.json";
         }

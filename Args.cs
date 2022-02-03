@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ProcessMonitor
 {
-    public enum ARGS
+    internal enum ARGS
     { 
         [Display(Name = "help", Description = "Displays the avalible commands.")]
         HELP = 0,
@@ -21,7 +21,7 @@ namespace ProcessMonitor
 
     }
 
-    public static class Extensions
+    internal static class Extensions
     {
         private static DisplayAttribute GetField(ARGS arg)
         { 
