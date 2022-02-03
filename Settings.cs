@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ProcessMonitor
 {
@@ -6,6 +7,8 @@ namespace ProcessMonitor
     {
         public int PingFrequency { get; set; }
         public bool AlertOnEmpty { get; set; }
+        
+        [JsonIgnore]
         public HashSet<string> Processes { get; set; }
 
         public SettingsFormat ()
@@ -41,6 +44,38 @@ namespace ProcessMonitor
         { 
             string jsonWrite = JsonSerializer.Serialize(this.Values);
             File.WriteAllText(Settings.GetSettingsPath(), jsonWrite);
+        }
+        
+        public void Change(string setting, string value)
+        {
+            var field = this.Values.GetType().GetProperty(setting);
+            if (field == null) 
+            { 
+                Console.WriteLine("Unknown Setting.");
+                return;
+            }
+
+            var fieldValue = field.GetValue(this.Values);
+            if (fieldValue == null) 
+            { 
+                Console.WriteLine("Unknown field was attempted to be changed.");
+                return;
+            }
+
+            var newValue = Convert.ChangeType(value, fieldValue.GetType());
+            field.SetValue(this.Values, newValue);
+            this.Save();
+
+            Console.WriteLine($"Updated. { Environment.NewLine}Old: {JsonSerializer.Serialize(fieldValue)} New{JsonSerializer.Serialize(newValue)}");
+        }
+
+        public void Print()
+        {
+            var options = new JsonSerializerOptions();
+            options.WriteIndented = true;
+
+            var jsonWrite = JsonSerializer.Serialize(this.Values, options);
+            Console.WriteLine(jsonWrite);
         }
 
         private static string GetSettingsPath() 

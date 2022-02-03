@@ -16,11 +16,20 @@ namespace ProcessMonitor
         [Display(Name = "add", Description = "Add a process to monitor.")]
         ADD = 6,
 
-        [Display(Name = "start", Description = "Start monitoring processes in background.")]
+        [Display(Name = "start", Description = "Start monitoring process in background.")]
         START = 8,
 
+        [Display(Name = "stop", Description = "Stops the monitoring process running in background.")]
+        STOP = 10,
+
         [Display(Name = "alert", Description = "(TEST) Triggers an alert as if a process monitored is missing.", Order = 2)]
-        ALERT = 10,
+        ALERT = 12,
+
+        [Display(Name = "settings", Description = "Show current settings.")]
+        SETTINGS = 14,
+
+        [Display(Name = "change", Description = "Change a settings value.")]
+        CHANGE = 16,
 
     }
 
@@ -57,7 +66,7 @@ namespace ProcessMonitor
                 if(arg == ARGS.UNKOWN) continue;
 
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write(arg.GetName());
+                Console.Write(arg.GetName().PadRight(20));
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\t" + arg.GetDescription());
             }
