@@ -9,6 +9,8 @@ namespace ProcessMonitor
         /// Open a new Console windows of the application
         /// </summary>
         /// <param name="args">arguments to pass to the application</param>
+        /// <param name="hidden">TODO</param>
+        /// <exception cref="Exception">TODO</exception> 
         public static void NewWindow(string args, bool hidden = true)
         {
             using (Process newProcess = new Process())
@@ -33,11 +35,16 @@ namespace ProcessMonitor
         /// </summary>
         public void ListProcesses()
         {
-            Process[] localProcesses = Process.GetProcesses();
+            Process[] localProcesses = Process.GetProcesses().OrderBy(x => x.ProcessName).ToArray();
+            HashSet<string> localProcessNames = new HashSet<string>();
 
             foreach (Process proc in localProcesses)
             {
-                Console.WriteLine($"Process Name: {proc.ProcessName}");
+                var procName = proc.ProcessName;
+                if(localProcessNames.Add(proc.ProcessName))
+                {
+                    Console.WriteLine($"Process Name: {proc.ProcessName}");
+                }
             }
         }
 
@@ -52,7 +59,7 @@ namespace ProcessMonitor
             if (localByName.Length != 0)
             {
                 Settings settings = new Settings();
-                settings.settings.Processes.Add(process);
+                settings.Values.Processes.Add(process);
                 settings.Save();
 
                 return $"{process} has been added";
@@ -84,7 +91,7 @@ namespace ProcessMonitor
         {
             Settings settings = new Settings();
 
-            System.Timers.Timer timer = new System.Timers.Timer(settings.settings.PingFrequency * ( 60 * 1000));
+            System.Timers.Timer timer = new System.Timers.Timer(settings.Values.PingFrequency * ( 60 * 1000));
             timer.Elapsed += TimedEvent;
             timer.AutoReset = true;
             timer.Enabled = true;
@@ -103,7 +110,7 @@ namespace ProcessMonitor
             Settings settings = new Settings();
 
             HashSet<string> missing = new HashSet<string>();
-            foreach (string process in settings.settings.Processes)
+            foreach (string process in settings.Values.Processes)
             {
                 if(Process.GetProcessesByName(process).Length == 0)
                 {
@@ -111,7 +118,7 @@ namespace ProcessMonitor
                 }
             }
 
-            if(!settings.settings.AlertOnEmpty && missing.Count != settings.settings.Processes.Count)
+            if(!settings.Values.AlertOnEmpty && missing.Count != settings.Values.Processes.Count)
             {
                 if(missing.Count > 0)
                 {

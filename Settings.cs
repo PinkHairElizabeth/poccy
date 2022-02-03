@@ -18,7 +18,7 @@ namespace ProcessMonitor
 
     internal class Settings 
     {
-        public SettingsFormat settings { get; set; }
+        public SettingsFormat Values { get; set; }
 
         public Settings() 
         {
@@ -34,12 +34,12 @@ namespace ProcessMonitor
             // Realistically should never happen.
             if(jsonParsed == null) throw new Exception("Something has gone horribly wrong with reading JSON settings.");
             
-            this.settings = jsonParsed;
+            this.Values = jsonParsed;
         }
 
         public void Save()
         { 
-            string jsonWrite = JsonSerializer.Serialize(this.settings);
+            string jsonWrite = JsonSerializer.Serialize(this.Values);
             File.WriteAllText(Settings.GetSettingsPath(), jsonWrite);
         }
 
