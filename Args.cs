@@ -4,20 +4,23 @@ namespace ProcessMonitor
 {
     internal enum ARGS
     { 
+        [Display(AutoGenerateField = true)]
+        UNKOWN = 0,
+
         [Display(Name = "help", Description = "Displays the avalible commands.")]
-        HELP = 0,
+        HELP = 2,
 
         [Display(Name = "list", Description = "List running processes.")]
-        LIST = 2, 
+        LIST = 4, 
 
         [Display(Name = "add", Description = "Add a process to monitor.")]
-        ADD = 4,
+        ADD = 6,
 
         [Display(Name = "start", Description = "Start monitoring processes in background.")]
-        START = 6,
+        START = 8,
 
         [Display(Name = "alert", Description = "(TEST) Triggers an alert as if a process monitored is missing.", Order = 2)]
-        ALERT = 8,
+        ALERT = 10,
 
     }
 
@@ -32,9 +35,14 @@ namespace ProcessMonitor
             return descriptionAttributes[0];
         }
 
-        public static ARGS GetField(string arg) => (ARGS)Enum.Parse(typeof(ARGS), arg);
         public static string GetName(this ARGS arg) => GetField(arg).Name ?? "";
         public static string GetDescription(this ARGS arg) => GetField(arg).Description ?? "";
+
+        public static ARGS GetField(string arg)
+        {
+            if (Enum.TryParse(typeof(ARGS), arg, true, out object? value) && value != null) return (ARGS)value;
+            return ARGS.UNKOWN;
+        } 
 
         public static void PrintArgs()
         {
@@ -46,6 +54,8 @@ namespace ProcessMonitor
             var args = Enum.GetValues<ARGS>();
             foreach(ARGS arg in args)
             {
+                if(arg == ARGS.UNKOWN) continue;
+
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.Write(arg.GetName());
                 Console.ForegroundColor = ConsoleColor.White;
