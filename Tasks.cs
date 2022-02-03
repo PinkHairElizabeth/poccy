@@ -9,8 +9,8 @@ namespace ProcessMonitor
         /// Open a new Console windows of the application
         /// </summary>
         /// <param name="args">arguments to pass to the application</param>
-        /// <param name="hidden">TODO</param>
-        /// <exception cref="Exception">TODO</exception> 
+        /// <param name="hidden">Open in a hidden windows</param>
+        /// <exception cref="Exception">Unknown Error Occured</exception> 
         public static void NewWindow(string args, bool hidden = true)
         {
             using (Process newProcess = new Process())
@@ -19,8 +19,8 @@ namespace ProcessMonitor
 
                 // Sanity Null Checks
                 // In theory, should never happen.
-                if(currentProcessModule == null) throw new Exception("Honestly... Idk what happened here.");
-                if(currentProcessModule.FileName == null) throw new Exception("Honestly... Idk what happened here.");
+                if(currentProcessModule == null) throw new Exception("Honestly... Idk what happened here. 01");
+                if(currentProcessModule.FileName == null) throw new Exception("Honestly... Idk what happened here. 02");
 
                 newProcess.StartInfo = new ProcessStartInfo(currentProcessModule.FileName);
                 newProcess.StartInfo.UseShellExecute = !hidden;
@@ -28,6 +28,23 @@ namespace ProcessMonitor
                 newProcess.StartInfo.CreateNoWindow = hidden;
                 newProcess.Start();
             }
+        }
+
+        /// <summary>
+        /// Stops all running instances of the process.
+        /// </summary>
+        public static void StopProcess()
+        {
+            var currentProcess = Process.GetCurrentProcess();
+            var processes = Process.GetProcessesByName(currentProcess.ProcessName);
+
+            foreach(Process proc in processes)
+            {
+                if (proc.Id != currentProcess.Id) proc.Kill();
+            }
+
+            Console.WriteLine("Process Stoped.");
+            currentProcess.Kill();
         }
 
         /// <summary>

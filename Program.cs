@@ -28,12 +28,20 @@
                     else Tasks.NewWindow("start background");
                     break;
 
+                case ARGS.STOP:
+                    Tasks.StopProcess();
+                    break;
+
                 case ARGS.ALERT:
                     tasks.Alarm(args[1]);
                     break;
 
                 case ARGS.SETTINGS:
                     new Settings().Print();
+                    break;
+
+                case ARGS.CHANGE:
+                    new Settings().Change(args[1], args[2]);
                     break;
 
                 case ARGS.HELP:
