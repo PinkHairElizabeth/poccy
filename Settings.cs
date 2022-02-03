@@ -43,6 +43,15 @@ namespace ProcessMonitor
             File.WriteAllText(Settings.GetSettingsPath(), jsonWrite);
         }
 
+        public void Print()
+        {
+            var options = new JsonSerializerOptions();
+            options.WriteIndented = true;
+
+            var jsonWrite = JsonSerializer.Serialize(this.Values, options);
+            Console.WriteLine(jsonWrite);
+        }
+
         private static string GetSettingsPath() 
         { 
             return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile).ToString() + "/process_monitor_settings.json";

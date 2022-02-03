@@ -32,6 +32,10 @@
                     tasks.Alarm(args[1]);
                     break;
 
+                case ARGS.SETTINGS:
+                    new Settings().Print();
+                    break;
+
                 case ARGS.HELP:
                 default:
                     Extensions.PrintArgs();

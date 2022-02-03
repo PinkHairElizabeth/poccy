@@ -22,6 +22,12 @@ namespace ProcessMonitor
         [Display(Name = "alert", Description = "(TEST) Triggers an alert as if a process monitored is missing.", Order = 2)]
         ALERT = 10,
 
+        [Display(Name = "settings", Description = "Show current settings.")]
+        SETTINGS = 12,
+
+        [Display(Name = "change", Description = "Change a settings value.")]
+        CHANGE = 14,
+
     }
 
     internal static class Extensions
@@ -57,7 +63,7 @@ namespace ProcessMonitor
                 if(arg == ARGS.UNKOWN) continue;
 
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write(arg.GetName());
+                Console.Write(arg.GetName().PadRight(20));
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\t" + arg.GetDescription());
             }
