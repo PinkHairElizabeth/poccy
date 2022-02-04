@@ -44,6 +44,10 @@
                     new Settings().Change(args[1], args[2]);
                     break;
 
+                case ARGS.INSTALL:
+                    Installation.Install();
+                    break;
+
                 case ARGS.HELP:
                 default:
                     Extensions.PrintArgs();

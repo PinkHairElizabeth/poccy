@@ -10,26 +10,29 @@ namespace ProcessMonitor
         [Display(Name = "help", Description = "Displays the avalible commands.")]
         HELP = 2,
 
+        [Display(Name = "install", Description = "Setups up the program to automatically start in it's current location.")]
+        INSTALL = 4,
+
         [Display(Name = "list", Description = "List running processes.")]
-        LIST = 4, 
+        LIST = 6, 
 
         [Display(Name = "add", Description = "Add a process to monitor.")]
-        ADD = 6,
+        ADD = 8,
 
         [Display(Name = "start", Description = "Start monitoring process in background.")]
-        START = 8,
+        START = 10,
 
         [Display(Name = "stop", Description = "Stops the monitoring process running in background.")]
-        STOP = 10,
+        STOP = 12,
 
         [Display(Name = "alert", Description = "(TEST) Triggers an alert as if a process monitored is missing.", Order = 2)]
-        ALERT = 12,
+        ALERT = 14,
 
         [Display(Name = "settings", Description = "Show current settings.")]
-        SETTINGS = 14,
+        SETTINGS = 16,
 
         [Display(Name = "change", Description = "Change a settings value.")]
-        CHANGE = 16,
+        CHANGE = 18,
 
     }
 

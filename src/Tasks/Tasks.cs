@@ -41,7 +41,7 @@ namespace ProcessMonitor
             foreach(Process proc in processes)
             {
                 if (proc.Id != currentProcess.Id) proc.Kill();
-            }
+            }   
 
             Console.WriteLine("Process Stoped.");
             currentProcess.Kill();
@@ -99,7 +99,6 @@ namespace ProcessMonitor
             }
             Console.Read();
         }
-
 
         /// <summary>
         /// Starts program for running in background.
