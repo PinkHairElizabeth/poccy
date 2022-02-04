@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace ProcessMonitor
+namespace Poccy
 {
     internal class SettingsFormat
     {

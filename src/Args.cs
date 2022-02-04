@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace ProcessMonitor
+namespace Poccy
 {
     internal enum ARGS
     { 

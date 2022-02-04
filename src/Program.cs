@@ -1,4 +1,4 @@
-﻿namespace ProcessMonitor
+﻿namespace Poccy
 {
     public class Program
     {

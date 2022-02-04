@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Timers;
 
-namespace ProcessMonitor
+namespace Poccy
 {
     internal class Tasks
     {

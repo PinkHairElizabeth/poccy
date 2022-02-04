@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace ProcessMonitor
+namespace Poccy
 {
     internal static class Installation
     {
